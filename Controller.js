@@ -1,10 +1,8 @@
-var context, Player, controller, loop, Blocks, game;
+var ctx, Player, controller, loop, Blocks, game;
+var ctx = document.getElementById("canvas").getContext("2d");
 
-context = document.querySelector("canvas").getContext("2d");
-
-context.canvas.height = 500;
-context.canvas.width = 999;
-
+ctx.canvas.height = 500;
+ctx.canvas.width = 999;
 //Blocks
 
 Blocks = {
@@ -29,7 +27,7 @@ controller = {
   left: false,
   right: false,
   up: false,
-  keyListener: function (event) {
+  keyListener: function(event) {
     var key_state = event.type == "keydown" ? true : false;
 
     switch (event.keyCode) {
@@ -46,7 +44,7 @@ controller = {
   }
 };
 
-loop = function () {
+loop = function() {
   if (controller.up && Player.jumping == false) {
     Player.y_velocity -= 30;
     Player.jumping = true;
@@ -90,29 +88,38 @@ loop = function () {
     Player.y = 450 - 16 - 32;
     Player.y_velocity = 0;
   }
-  context.fillStyle = "#38A2DF";
-  context.fillRect(0, 0, 999, 500);
+  //left
+  if (Player.x > 950) {
+    Player.x = 950;
+  }
+  //right
+  if (Player.x < 0) {
+    Player.x = 0;
+  }
+
+  ctx.fillStyle = "#38A2DF";
+  ctx.fillRect(0, 0, 999, 500);
   //end of fllor
-  context.fillStyle = "#ff0000";
-  context.beginPath();
-  context.rect(Player.x, Player.y, Player.width, Player.height);
-  context.fill();
-  context.strokeStyle = "#202830";
-  context.lineWidth = 100;
-  context.beginPath();
-  context.moveTo(0, 500);
-  context.lineTo(999, 500);
-  context.stroke();
+  ctx.fillStyle = "#ff0000";
+  ctx.beginPath();
+  ctx.rect(Player.x, Player.y, Player.width, Player.height);
+  ctx.fill();
+  ctx.strokeStyle = "#202830";
+  ctx.lineWidth = 100;
+  ctx.beginPath();
+  ctx.moveTo(0, 500);
+  ctx.lineTo(999, 500);
+  ctx.stroke();
 
   //blocks
-  context.fillStyle = "#363836";
-  context.stroke();
-  context.fillRect(Blocks.x, Blocks.y, Blocks.width, Blocks.height);
-
-  //end of Blocks
+  ctx.fillStyle = "#363836";
+  ctx.stroke();
+  ctx.fillRect(Blocks.x, Blocks.y, Blocks.width, Blocks.height);
 
   window.requestAnimationFrame(loop);
 };
+
+//Images
 
 window.addEventListener("keydown", controller.keyListener);
 window.addEventListener("keyup", controller.keyListener);
